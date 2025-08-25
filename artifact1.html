@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artifact 1</title>
+  <link rel="stylesheet" href="artifacts.css" />
+</head>
+<body>
+  <nav class="navbar">
+      <h1>ZINEDINE DE LEON</h1>
+  </nav>
+  <div class="container">
+    <h1>Software Design and Engineering</h1>
+    <p>The artifact I have chosen is my final project for CS-340, an animal shelter analytical dashboard written in Python with data stored in a MongoDB database. This project, created in April 2025, demonstrates my ability to build data-driven applications and integrate non-relational databases into software solutions.
+    <p>I included this artifact in my ePortfolio because it highlights my ability to interface with the data layer of a project, a critical skill in software development since most applications rely on data handling. To improve the project, I added a SQL database that allows the animal shelter to track volunteers and manage their shifts, showcasing my versatility with both relational and non-relational databases.</p>
+    <p>In terms of course outcomes, I believe I successfully met my goal of applying innovative techniques by implementing a dual-database approach. Each database serves a distinct purpose, which establishes a clear separation of concerns and strengthens the project’s design.</p>
+    <p>Through the process of enhancing and modifying this artifact, I learned how to frame technical problems from a business perspective. One challenge was simulating a production environment, which I addressed by using a SQLite database as a stand-in. Moving forward, I plan to enhance the project further by adding an API server in Express.js and transitioning to a production-ready database such as PostgreSQL or MySQL to prepare the project for deployment.</p></p>
+    <a href="index.html">Back to Home</a>
+    <a href="https://github.com/zdeleon5/CS-340">Git Repository</a>
+  </div>
+
+  <div class="container-2">
+    <h1>Code Enhancement</h1>
+  <pre>
+    <code>
+-- Volunteers Table
+CREATE TABLE volunteers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+-- Shifts Table
+CREATE TABLE shifts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,          -- ISO format 'YYYY-MM-DD'
+    start_time TEXT NOT NULL,    -- format 'HH:MM'
+    end_time TEXT NOT NULL       -- format 'HH:MM'
+);
+
+-- Assignments Table
+CREATE TABLE assignments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    volunteer_id INTEGER NOT NULL,
+    shift_id INTEGER NOT NULL,
+    FOREIGN KEY (volunteer_id) REFERENCES volunteers(id),
+    FOREIGN KEY (shift_id) REFERENCES shifts(id)
+);
+
+    </code>
+  </pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artifact 1</title>
+  <link rel="stylesheet" href="artifacts.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <h1>ZINEDINE DE LEON</h1>
+  </nav>
+  <div class="container">
+    <h1>Data Structures and Algorithms</h1>
+    <p>The artifact is my final project for CS-320, created in March 2025, which implements three service classes for appointments, tasks, and contacts, each supporting full CRUD operations. I selected this artifact for my ePortfolio because it highlights my ability to apply data structures effectively, using HashMaps for fast lookups and TreeSets for ordered collections. I enhanced the project by adding TreeSet support, leveraging the Comparable interface to naturally order appointment dates. This directly aligns with the course outcome of utilizing algorithmic capabilities, as I demonstrated the ability to choose optimized structures for specific use cases. Through this process, I also learned how to implement a TreeSet in Java, gaining insight into how the language’s design simplifies the use of advanced data structures.</p>
+
+    <a href="index.html">Back to Home</a>
+    <a href="https://github.com/zdeleon5/cs320">Git Repository</a>
+  </div>
+
+  <div class="container-2">
+    <h1>Code Enhancement</h1>
+  <pre>
+    <code>
+import java.util.Date;
+
+public class Appointment implements Comparable<Appointment>  {
+    private final String appointmentId;
+    private Date appointmentDate;
+    private String description;
+
+    public Appointment(String appointmentId, Date appointmentDate, String description) {
+        if (appointmentId == null || appointmentId.length() > 10 ) {
+            throw new IllegalArgumentException("Appointment ID cannot be null, empty, or longer than 10 characters.");
+        }
+
+        if (appointmentDate == null || appointmentDate.before(new Date())) {
+            throw new IllegalArgumentException("Appointment date cannot be null or in the past.");
+        }
+
+        if (description == null || description.length() > 50) {
+            throw new IllegalArgumentException("Description cannot be null, empty, or longer than 50 characters.");
+        }
+
+        this.appointmentId = appointmentId;
+        this.appointmentDate = appointmentDate;
+        this.description = description;
+    }
+
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public Date getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setAppointmentDate(Date appointmentDate) {
+        if (appointmentDate == null || appointmentDate.before(new Date())) {
+            throw new IllegalArgumentException("Appointment date cannot be null or in the past.");
+        }
+        this.appointmentDate = appointmentDate;
+    }
+
+    public void setDescription(String description) {
+        if (description == null || description.length() > 50) {
+            throw new IllegalArgumentException("Description cannot be null, empty, or longer than 50 characters.");
+        }
+        this.description = description;
+    }
+
+    // add compareTo method to implement Comparable interface
+    // This method compares appointments first by date, then by appointmentId
+    @Override
+    public int compareTo(Appointment other) {
+        int dateCompare = this.appointmentDate.compareTo(other.appointmentDate);
+        if (dateCompare != 0) {
+            return dateCompare;
+        }
+        return this.appointmentId.compareTo(other.appointmentId);
+    }
+}
+    </code>
+  </pre>
+
+  <pre>
+    <code>
+        import java.util.TreeSet;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+
+public class AppointmentService {
+    private final Set<Appointment> appointments = new TreeSet<>();
+
+    public void addAppointment(Appointment appointment) {
+        if (appointment == null) {
+            throw new IllegalArgumentException("Appointment cannot be null.");
+        }
+        // Check for duplicate ID
+        for (Appointment a : appointments) {
+            if (a.getAppointmentId().equals(appointment.getAppointmentId())) {
+                throw new IllegalArgumentException("Appointment with this ID already exists.");
+            }
+        }
+        appointments.add(appointment);
+    }
+
+    public void deleteAppointment(String appointmentId) {
+        if (appointmentId == null || appointmentId.isEmpty()) {
+            throw new IllegalArgumentException("Appointment ID cannot be null or empty.");
+        }
+        Appointment toRemove = null;
+        for (Appointment a : appointments) {
+            if (a.getAppointmentId().equals(appointmentId)) {
+                toRemove = a;
+                break;
+            }
+        }
+        if (toRemove == null) {
+            throw new IllegalArgumentException("No appointment found with this ID.");
+        }
+        appointments.remove(toRemove);
+    }
+
+
+    // simpler to keep appointments sorted by date since TreeSet is used and it implements Comparable to naturally order by date
+    public List<Appointment> listAppointmentsByDate() {
+        return new ArrayList<>(appointments);
+    }
+}
+    </code>
+  </pre>
+</div>
+</body>
+</html>

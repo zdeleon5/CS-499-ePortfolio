@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artifact 1</title>
+  <link rel="stylesheet" href="artifacts.css" />
+</head>
+<body>
+  <nav class="navbar">
+      <h1>ZINEDINE DE LEON</h1>
+  </nav>
+  <div class="container">
+    <h1>Databases</h1>
+    <p>The artifact is the final project for my mobile development class, a weight tracking app created in June 2025. I included it in my ePortfolio because it demonstrates my ability to optimize database performance by adding indexes on frequently queried data, showcasing my skill in identifying and addressing potential bottlenecks in an application. While I did not fully meet the planned course outcome of implementing innovative techniques, I believe the enhancements made significantly improved the app’s efficiency. Through this process, I learned how to edit an existing database without altering its structure, which was a valuable challenge that strengthened my problem-solving and technical abilities.</p>
+    <a href="index.html">Back Home</a>
+    <a href="https://github.com/zdeleon5/cs-360">Git Repository</a>
+  </div>
+
+    <div class="container-2">
+    <h1>Code Enhancement</h1>
+  <pre>
+    <code>
+import package com.example.cs_360_project_deleon.db;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class WeightDB extends SQLiteOpenHelper {
+    private static final String DB_STRING = "weight.db";
+    private static final int VERSION = 4; // bump version to trigger onUpgrade
+
+    public WeightDB(Context context) {
+        super(context, DB_STRING, null, VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE users (" +
+                "username TEXT PRIMARY KEY, " +
+                "passwordHash TEXT)");
+
+        db.execSQL("CREATE TABLE weights (" +
+                "username TEXT, " +
+                "weight REAL, " +
+                "date TEXT, " +
+                "FOREIGN KEY(username) REFERENCES users(username))");
+
+        db.execSQL("CREATE TABLE goals (" +
+                "username TEXT, " +
+                "goal REAL, " +
+                "date TEXT, " +
+                "FOREIGN KEY(username) REFERENCES users(username))");
+
+        //  Indexes for faster lookups
+        db.execSQL("CREATE INDEX idx_weights_username ON weights(username)");
+        db.execSQL("CREATE INDEX idx_weights_date ON weights(date)");
+        db.execSQL("CREATE INDEX idx_goals_username ON goals(username)");
+        db.execSQL("CREATE INDEX idx_goals_date ON goals(date)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS users");
+        db.execSQL("DROP TABLE IF EXISTS weights");
+        db.execSQL("DROP TABLE IF EXISTS goals");
+        onCreate(db);
+    }
+}
+
+    </code>
+  </pre>
+</div>
+
+
+</body>
+</html>
